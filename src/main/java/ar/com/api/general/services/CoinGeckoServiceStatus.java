@@ -1,6 +1,6 @@
 package ar.com.api.general.services;
 
-import ar.com.api.general.dto.Ping;
+import ar.com.api.general.model.Ping;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

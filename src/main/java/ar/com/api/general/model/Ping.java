@@ -1,4 +1,4 @@
-package ar.com.api.general.dto;
+package ar.com.api.general.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

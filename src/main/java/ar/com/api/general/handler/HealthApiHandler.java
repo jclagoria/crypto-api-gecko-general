@@ -1,7 +1,7 @@
 package ar.com.api.general.handler;
 
 
-import ar.com.api.general.dto.Ping;
+import ar.com.api.general.model.Ping;
 import ar.com.api.general.services.CoinGeckoServiceStatus;
 
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 @Component
 @AllArgsConstructor
 @Slf4j
-public class ApiStatusHandler {
+public class HealthApiHandler {
  
  private CoinGeckoServiceStatus serviceStatus;
 
