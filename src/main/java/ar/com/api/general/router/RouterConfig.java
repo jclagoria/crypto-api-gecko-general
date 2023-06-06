@@ -1,5 +1,6 @@
 package ar.com.api.general.router;
 
+import ar.com.api.general.handler.ExchangeRateApiHandler;
 import ar.com.api.general.handler.GlobalApiHandler;
 import ar.com.api.general.handler.HealthApiHandler;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,9 @@ public class RouterConfig {
 
  @Value("${coins.decentralized}")
  private String URL_DECENTRALIZED_GECKO_API;
+
+ @Value("${coins.exchangeRates}")
+ private String URL_EXCHANGE_RATE_GECKO_API;
  @Bean
  public RouterFunction<ServerResponse> route(HealthApiHandler handler) {
 
@@ -41,10 +45,24 @@ public class RouterConfig {
           .route()
           .GET(
                   URL_SERVICE_API + URL_GLOBAL_GECKO_API,
-                  handler::getGlobalDataFromGeckoApi)
+                  handler::getGlobalDataFromGeckoApi
+          )
           .GET(
                   URL_SERVICE_API + URL_DECENTRALIZED_GECKO_API,
-                  handler::getDecentralizedFinanceDefi)
+                  handler::getDecentralizedFinanceDefi
+          )
+          .build();
+ }
+
+ @Bean
+ public RouterFunction<ServerResponse> routeExchangeRate(ExchangeRateApiHandler handler) {
+
+  return RouterFunctions
+          .route()
+          .GET(
+                  URL_SERVICE_API + URL_EXCHANGE_RATE_GECKO_API,
+                  handler::getExchangeRateFromGeckoApi
+          )
           .build();
  }
 
