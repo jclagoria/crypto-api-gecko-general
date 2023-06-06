@@ -1,5 +1,6 @@
 package ar.com.api.general.handler;
 
+import ar.com.api.general.model.DecentralizedFinance;
 import ar.com.api.general.model.Global;
 import ar.com.api.general.services.CoinGeckoGeneralServicesApi;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,18 @@ public class GlobalApiHandler {
                         generalService.getGlobalData(),
                         Global.class
                 );
+    }
+
+    public Mono<ServerResponse> getDecentralizedFinanceDefi(ServerRequest sRequest) {
+        log.info("In GlobalApiHandler.getDecentralizedFinanceDefi");
+
+        return ServerResponse
+                .ok()
+                .body(
+                        generalService.getDecentralizedFinance(),
+                        DecentralizedFinance.class
+                );
+
     }
 
 }

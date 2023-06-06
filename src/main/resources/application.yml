@@ -6,9 +6,11 @@ coins:
   baseURL: 'api/coins'
   healthAPI: '/health-api'
   global: '/global'
+  decentralized: '/global/decentralized_finance_defi'
 
 ## Url Coin Gecko RestService
 api:
   urlCoinGecko: 'https://api.coingecko.com/api/v3'
   ping: '/ping'
   global: '/global'
+  decentralized: '/global/decentralized_finance_defi'

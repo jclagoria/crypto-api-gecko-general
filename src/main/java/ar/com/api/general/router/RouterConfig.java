@@ -21,7 +21,9 @@ public class RouterConfig {
 
  @Value("${coins.global}")
  private String URL_GLOBAL_GECKO_API;
- 
+
+ @Value("${coins.decentralized}")
+ private String URL_DECENTRALIZED_GECKO_API;
  @Bean
  public RouterFunction<ServerResponse> route(HealthApiHandler handler) {
 
@@ -40,6 +42,9 @@ public class RouterConfig {
           .GET(
                   URL_SERVICE_API + URL_GLOBAL_GECKO_API,
                   handler::getGlobalDataFromGeckoApi)
+          .GET(
+                  URL_SERVICE_API + URL_DECENTRALIZED_GECKO_API,
+                  handler::getDecentralizedFinanceDefi)
           .build();
  }
 
