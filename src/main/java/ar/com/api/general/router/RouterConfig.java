@@ -1,9 +1,6 @@
 package ar.com.api.general.router;
 
-import ar.com.api.general.handler.ExchangeRateApiHandler;
-import ar.com.api.general.handler.GlobalApiHandler;
-import ar.com.api.general.handler.HealthApiHandler;
-import ar.com.api.general.handler.SearchApiHandler;
+import ar.com.api.general.handler.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +29,9 @@ public class RouterConfig {
 
  @Value("${coins.search}")
  private String URL_SEARCH_GECKO_API;
+
+ @Value("${coins.simplePrice}")
+ private String URL_SIMPLE_PRICE_GECKO_API;
 
  @Bean
  public RouterFunction<ServerResponse> route(HealthApiHandler handler) {
@@ -80,6 +80,16 @@ public class RouterConfig {
                   URL_SERVICE_API + URL_SEARCH_GECKO_API,
                   handler::getListOfCoinsWithSearchAPI
           )
+          .build();
+
+ }
+ @Bean
+ public RouterFunction<ServerResponse> routeSimple(SimpleApiHandler handler) {
+
+  return RouterFunctions
+          .route()
+          .GET(URL_SERVICE_API + URL_SIMPLE_PRICE_GECKO_API,
+                  handler::getSimplePriceFromCoinGeckoApi)
           .build();
 
  }

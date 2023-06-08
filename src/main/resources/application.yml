@@ -9,6 +9,7 @@ coins:
   decentralized: '/global/decentralized_finance_defi'
   exchangeRates: '/exchange_rates'
   search: '/search'
+  simplePrice: '/simple/price'
 
 ## Url Coin Gecko RestService
 api:
@@ -18,3 +19,4 @@ api:
   decentralized: '/global/decentralized_finance_defi'
   exchangeRates: '/exchange_rates'
   search: '/search'
+  simplePrice: '/simple/price'
