@@ -11,6 +11,7 @@ coins:
   search: '/search'
   simplePrice: '/simple/price'
   simpleTokePriceById: '/simple/token_price/{ids}'
+  searchTrending: '/search/trending'
 
 ## Url Coin Gecko RestService
 api:
@@ -22,3 +23,4 @@ api:
   search: '/search'
   simplePrice: '/simple/price'
   simpleTokePriceById: '/simple/token_price/%s'
+  searchTrending: '/search/trending'
