@@ -36,6 +36,9 @@ public class RouterConfig {
  @Value("${coins.simpleTokePriceById}")
  private String URL_SIMPLE_TOKEN_PRICE_BY_ID;
 
+ @Value("${coins.searchTrending}")
+ private String URL_SEARCH_TRENDING_COIN_API;
+
  @Bean
  public RouterFunction<ServerResponse> route(HealthApiHandler handler) {
 
@@ -82,6 +85,10 @@ public class RouterConfig {
           .GET(
                   URL_SERVICE_API + URL_SEARCH_GECKO_API,
                   handler::getListOfCoinsWithSearchAPI
+          )
+          .GET(
+                  URL_SERVICE_API + URL_SEARCH_TRENDING_COIN_API,
+                  handler::getTrendingOfCoinsAPI
           )
           .build();
 
