@@ -1,6 +1,7 @@
 package ar.com.api.general.services;
 
 import ar.com.api.general.dto.SimplePriceFilterDTO;
+import ar.com.api.general.dto.TokenPriceByIdDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class CoinGeckoSimpleApiService {
 
     @Value("${api.simplePrice}")
     private String URL_COIN_GECKO_SIMPLE_API_SERVICE;
+
+    @Value("${api.simpleTokePriceById}")
+    private String URL_COIN_GECKO_TOKEN_PRICE_BY_ID;
     private WebClient webClient;
     public CoinGeckoSimpleApiService(WebClient wClient) {
         this.webClient = wClient;
@@ -31,6 +35,22 @@ public class CoinGeckoSimpleApiService {
                 .bodyToMono(Map.class)
                 .doOnError(throwable -> log.error("The service is unavailable!", throwable));
     }
+
+    public Mono<Map> getSimplePriceTokenById(TokenPriceByIdDTO filterDTO){
+
+        log.info("in getSimplePriceTokenById - Calling Gecko Api Service");
+
+        return webClient
+                .get()
+                .uri(
+                        String.format(
+                                URL_COIN_GECKO_TOKEN_PRICE_BY_ID,
+                                filterDTO.getIds()) + filterDTO.getUrlFilterString()
+                ).retrieve()
+                .bodyToMono(Map.class)
+                .doOnError(throwable -> log.error("The service is unavailable!", throwable));
+    }
+
 
 
 }

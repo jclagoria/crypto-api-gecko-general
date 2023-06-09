@@ -33,6 +33,9 @@ public class RouterConfig {
  @Value("${coins.simplePrice}")
  private String URL_SIMPLE_PRICE_GECKO_API;
 
+ @Value("${coins.simpleTokePriceById}")
+ private String URL_SIMPLE_TOKEN_PRICE_BY_ID;
+
  @Bean
  public RouterFunction<ServerResponse> route(HealthApiHandler handler) {
 
@@ -90,6 +93,8 @@ public class RouterConfig {
           .route()
           .GET(URL_SERVICE_API + URL_SIMPLE_PRICE_GECKO_API,
                   handler::getSimplePriceFromCoinGeckoApi)
+          .GET(URL_SERVICE_API + URL_SIMPLE_TOKEN_PRICE_BY_ID,
+                  handler::getSimplePriceTokenByIDFromCoinGeckoApi)
           .build();
 
  }
