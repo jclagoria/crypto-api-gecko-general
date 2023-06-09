@@ -1,6 +1,7 @@
 package ar.com.api.general.handler;
 
 import ar.com.api.general.dto.SimplePriceFilterDTO;
+import ar.com.api.general.dto.TokenPriceByIdDTO;
 import ar.com.api.general.services.CoinGeckoSimpleApiService;
 
 import lombok.AllArgsConstructor;
@@ -40,7 +41,28 @@ public class SimpleApiHandler {
                         coinGeckoSimpleApiService.getSimplePriceApiService(filterDTO),
                         Map.class
                 );
+    }
 
+    public Mono<ServerResponse> getSimplePriceTokenByIDFromCoinGeckoApi(ServerRequest serverRequest){
+
+        TokenPriceByIdDTO filterDTO = TokenPriceByIdDTO
+                .builder()
+                .ids(serverRequest.pathVariable("ids"))
+                .contractAddresses(serverRequest.queryParam("contractAddress").get())
+                .vsCurrencies(serverRequest.queryParam("vsCurrencies").get())
+                .include24hrChange(serverRequest.queryParam("include24hrChange"))
+                .include24hrVol(serverRequest.queryParam("include24hrVol"))
+                .includeLastUpdatedAt(serverRequest.queryParam("includeLastUpdatedAt"))
+                .includeMarketCap(serverRequest.queryParam("includeMarketCap"))
+                .precision(serverRequest.queryParam("precision"))
+                .build();
+
+        return ServerResponse
+                .ok()
+                .body(
+                        coinGeckoSimpleApiService.getSimplePriceTokenById(filterDTO),
+                        Map.class
+                );
     }
 
 }
