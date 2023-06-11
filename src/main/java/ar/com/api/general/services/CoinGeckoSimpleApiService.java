@@ -2,6 +2,7 @@ package ar.com.api.general.services;
 
 import ar.com.api.general.dto.SimplePriceFilterDTO;
 import ar.com.api.general.dto.TokenPriceByIdDTO;
+import ar.com.api.general.exception.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class CoinGeckoSimpleApiService {
                 .uri(URL_COIN_GECKO_SIMPLE_API_SERVICE + filterDTO.getUrlFilterString())
                 .retrieve()
                 .bodyToMono(Map.class)
-                .doOnError(throwable -> log.error("The service is unavailable!", throwable));
+                .doOnError(throwable -> new BadRequestException(throwable.getMessage()));
     }
 
     public Mono<Map> getSimplePriceTokenById(TokenPriceByIdDTO filterDTO){
