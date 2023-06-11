@@ -1,5 +1,8 @@
 package ar.com.api.general.handler;
 
+import ar.com.api.general.exception.BadRequestException;
+import ar.com.api.general.exception.CoinGeckoDataNotFoudException;
+import ar.com.api.general.exception.ServiceException;
 import ar.com.api.general.model.DecentralizedFinance;
 import ar.com.api.general.model.Global;
 import ar.com.api.general.services.CoinGeckoGeneralServicesApi;
@@ -26,7 +29,11 @@ public class GlobalApiHandler {
                 .body(
                         generalService.getGlobalData(),
                         Global.class
+                )
+                .switchIfEmpty(
+                        Mono.error(new CoinGeckoDataNotFoudException())
                 );
+
     }
 
     public Mono<ServerResponse> getDecentralizedFinanceDefi(ServerRequest sRequest) {
