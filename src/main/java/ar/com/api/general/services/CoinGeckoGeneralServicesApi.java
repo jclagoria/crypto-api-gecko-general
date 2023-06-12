@@ -37,19 +37,17 @@ public class CoinGeckoGeneralServicesApi extends CoinGeckoServiceApi {
                 .retrieve()
                 .onStatus(
                         HttpStatusCode::is4xxClientError,
-                        getClientResponseMonoFunction()
-
+                        getClientResponseMonoDataException()
                 )
                 .onStatus(
                         HttpStatusCode::is5xxServerError,
-                        getClientResponseMonoFunction()
+                        getClientResponseMonoServerException()
                 )
                 .bodyToMono(Global.class)
                 .doOnError(
                         ManageExceptionCoinGeckoServiceApi::throwServiceException
                 );
     }
-
 
     public Mono<DecentralizedFinance> getDecentralizedFinance() {
 
@@ -61,11 +59,11 @@ public class CoinGeckoGeneralServicesApi extends CoinGeckoServiceApi {
                 .retrieve()
                 .onStatus(
                         HttpStatusCode::is4xxClientError,
-                        getClientResponseMonoFunction()
+                        getClientResponseMonoDataException()
                 )
                 .onStatus(
                         HttpStatusCode::is5xxServerError,
-                        getClientResponseMonoFunction()
+                        getClientResponseMonoServerException()
                 )
                 .bodyToMono(DecentralizedFinance.class)
                 .doOnError(
