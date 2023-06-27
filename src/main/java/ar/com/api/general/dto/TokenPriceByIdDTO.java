@@ -1,5 +1,7 @@
 package ar.com.api.general.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,9 +11,18 @@ import java.util.Optional;
 @Builder
 public class TokenPriceByIdDTO implements IFilter {
 
+    @NotBlank
+    @NotEmpty
     private String ids;
+
+    @NotBlank
+    @NotEmpty
     private String vsCurrencies;
+
+    @NotBlank
+    @NotEmpty
     private String contractAddresses;
+
     private Optional<String> includeMarketCap;
     private Optional<String> include24hrVol;
     private Optional<String> include24hrChange;
