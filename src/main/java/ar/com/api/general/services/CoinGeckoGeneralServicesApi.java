@@ -43,10 +43,10 @@ public class CoinGeckoGeneralServicesApi extends CoinGeckoServiceApi {
                         HttpStatusCode::is5xxServerError,
                         getClientResponseMonoServerException()
                 )
-                .bodyToMono(Global.class)/*
+                .bodyToMono(Global.class)
                 .doOnError(
                         ManageExceptionCoinGeckoServiceApi::throwServiceException
-                )*/;
+                );
     }
 
     public Mono<DecentralizedFinance> getDecentralizedFinance() {
