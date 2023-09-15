@@ -4,6 +4,7 @@ import ar.com.api.general.dto.SimplePriceFilterDTO;
 import ar.com.api.general.dto.TokenPriceByIdDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class CoinGeckoSimpleApiService {
+public class CoinGeckoSimpleApiService extends CoinGeckoServiceApi {
 
     @Value("${api.simplePrice}")
     private String URL_COIN_GECKO_SIMPLE_API_SERVICE;
@@ -32,8 +33,18 @@ public class CoinGeckoSimpleApiService {
                 .get()
                 .uri(URL_COIN_GECKO_SIMPLE_API_SERVICE + filterDTO.getUrlFilterString())
                 .retrieve()
+                .onStatus(
+                        HttpStatusCode::is4xxClientError,
+                        getClientResponseMonoDataException()
+                )
+                .onStatus(
+                        HttpStatusCode::is5xxServerError,
+                        getClientResponseMonoDataException()
+                )
                 .bodyToMono(Map.class)
-                .doOnError(throwable -> log.error("The service is unavailable!", throwable));
+                .doOnError(
+                        ManageExceptionCoinGeckoServiceApi::throwServiceException
+                );
     }
 
     public Mono<Map> getSimplePriceTokenById(TokenPriceByIdDTO filterDTO){
@@ -47,8 +58,18 @@ public class CoinGeckoSimpleApiService {
                                 URL_COIN_GECKO_TOKEN_PRICE_BY_ID,
                                 filterDTO.getIds()) + filterDTO.getUrlFilterString()
                 ).retrieve()
+                .onStatus(
+                        HttpStatusCode::is4xxClientError,
+                        getClientResponseMonoDataException()
+                )
+                .onStatus(
+                        HttpStatusCode::is5xxServerError,
+                        getClientResponseMonoDataException()
+                )
                 .bodyToMono(Map.class)
-                .doOnError(throwable -> log.error("The service is unavailable!", throwable));
+                .doOnError(
+                        ManageExceptionCoinGeckoServiceApi::throwServiceException
+                );
     }
 
 

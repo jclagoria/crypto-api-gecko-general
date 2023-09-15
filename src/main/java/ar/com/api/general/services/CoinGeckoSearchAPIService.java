@@ -5,6 +5,7 @@ import ar.com.api.general.model.Search;
 import ar.com.api.general.model.Trending;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -12,7 +13,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
-public class CoinGeckoSearchAPIService {
+public class CoinGeckoSearchAPIService extends CoinGeckoServiceApi {
 
     @Value("${api.search}")
     private String URL_GECKO_SERVICE_SEARCH_API;
@@ -32,8 +33,18 @@ public class CoinGeckoSearchAPIService {
                 .get()
                 .uri(URL_GECKO_SERVICE_SEARCH_API + filterDTO.getUrlFilterString())
                 .retrieve()
+                .onStatus(
+                        HttpStatusCode::is4xxClientError,
+                        getClientResponseMonoDataException()
+                )
+                .onStatus(
+                        HttpStatusCode::is5xxServerError,
+                        getClientResponseMonoDataException()
+                )
                 .bodyToMono(Search.class)
-                .doOnError(throwable -> log.error("The service is unavailable!", throwable));
+                .doOnError(
+                        ManageExceptionCoinGeckoServiceApi::throwServiceException
+                );
     }
 
     public Flux<Trending> getSearchTrendingFromGeckoApi(){
@@ -44,8 +55,18 @@ public class CoinGeckoSearchAPIService {
                 .get()
                 .uri(URL_GECKO_SERVICE_SEARCH_TRENDING_API)
                 .retrieve()
+                .onStatus(
+                        HttpStatusCode::is4xxClientError,
+                        getClientResponseMonoDataException()
+                )
+                .onStatus(
+                        HttpStatusCode::is5xxServerError,
+                        getClientResponseMonoDataException()
+                )
                 .bodyToFlux(Trending.class)
-                .doOnError(throwable -> log.error("The service is unavailable!", throwable));
+                .doOnError(
+                        ManageExceptionCoinGeckoServiceApi::throwServiceException
+                );
     }
 
 }

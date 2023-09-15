@@ -1,6 +1,9 @@
 package ar.com.api.general.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
+import lombok.NonNull;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -8,8 +11,15 @@ import java.util.Optional;
 @Builder
 public class SimplePriceFilterDTO implements IFilter, Serializable {
 
+
+    @NotBlank
+    @NotEmpty
     private String ids;
+
+    @NotBlank
+    @NotEmpty
     private String vsCurrencies;
+
     private Optional<String> includeMarketCap;
     private Optional<String> include24hrVol;
     private Optional<String> include24hrChange;
