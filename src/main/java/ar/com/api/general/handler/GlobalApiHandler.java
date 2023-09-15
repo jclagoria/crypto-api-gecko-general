@@ -6,6 +6,7 @@ import ar.com.api.general.model.DecentralizedFinance;
 import ar.com.api.general.model.Global;
 import ar.com.api.general.services.CoinGeckoGeneralServicesApi;
 
+import ar.com.api.general.services.ManageExceptionCoinGeckoServiceApi;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

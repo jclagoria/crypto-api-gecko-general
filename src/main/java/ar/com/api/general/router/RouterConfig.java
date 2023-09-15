@@ -45,17 +45,6 @@ public class  RouterConfig {
  private String URL_SEARCH_TRENDING_COIN_API;
 
  @Bean
-
- public RouterFunction<ServerResponse> route(HealthApiHandler handler) {
-
-  return RouterFunctions
-            .route()
-            .GET(URL_SERVICE_API + URL_HEALTH_GECKO_API, 
-                        handler::getStatusServiceCoinGecko)
-            .build();
- }
-
- @Bean
  public RouterFunction<ServerResponse> routeGlobal(GlobalApiHandler handler) {
 
   return RouterFunctions
