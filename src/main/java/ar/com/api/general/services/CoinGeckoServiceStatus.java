@@ -1,5 +1,6 @@
 package ar.com.api.general.services;
 
+import ar.com.api.general.configuration.ExternalServerConfig;
 import ar.com.api.general.model.Ping;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
@@ -13,29 +14,28 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class CoinGeckoServiceStatus extends CoinGeckoServiceApi {
 
- @Value("${api.ping}")
- private String URL_PING_SERVICE;
-
+ private ExternalServerConfig externalServerConfig;
  private WebClient webClient;
 
- public CoinGeckoServiceStatus(WebClient webClient) {
+ public CoinGeckoServiceStatus(WebClient webClient, ExternalServerConfig externalServerConfig) {
   this.webClient = webClient;
+  this.externalServerConfig = externalServerConfig;
  }
 
  public Mono<Ping> getStatusCoinGeckoService() {
   
-  log.info("Calling method: ", URL_PING_SERVICE); 
+  log.info("Calling method -> " + externalServerConfig.getPing());
 
   return webClient
          .get()
-         .uri(URL_PING_SERVICE)
+         .uri(externalServerConfig.getPing())
          .retrieve()
           .onStatus(
-                  HttpStatusCode::is4xxClientError,
+                  status -> status.is4xxClientError(),
                   getClientResponseMonoDataException()
           )
           .onStatus(
-                  HttpStatusCode::is5xxServerError,
+                  status -> status.is5xxServerError(),
                   getClientResponseMonoDataException()
           )
          .bodyToMono(Ping.class)

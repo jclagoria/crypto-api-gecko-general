@@ -1,10 +1,10 @@
 package ar.com.api.general.services;
 
+import ar.com.api.general.configuration.ExternalServerConfig;
 import ar.com.api.general.dto.SearchDTO;
 import ar.com.api.general.model.Search;
 import ar.com.api.general.model.Trending;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,30 +15,30 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class CoinGeckoSearchAPIService extends CoinGeckoServiceApi {
 
-    @Value("${api.search}")
-    private String URL_GECKO_SERVICE_SEARCH_API;
-
-    @Value("${api.searchTrending}")
-    private String URL_GECKO_SERVICE_SEARCH_TRENDING_API;
+    private ExternalServerConfig externalServerConfig;
     private WebClient webClient;
-    public CoinGeckoSearchAPIService(WebClient wClient) {
+    public CoinGeckoSearchAPIService(WebClient wClient, ExternalServerConfig externalServerConfig) {
         this.webClient = wClient;
+        this.externalServerConfig = externalServerConfig;
     }
 
     public Mono<Search> getSearchFromGeckoApi(SearchDTO filterDTO) {
 
-        log.info("in getSearchFromGeckoApi - Calling Gecko Api Service");
+        log.info("in getSearchFromGeckoApi - Calling Gecko Api Service -> "
+                + externalServerConfig.getSearch()
+                + filterDTO.getUrlFilterString());
 
         return webClient
                 .get()
-                .uri(URL_GECKO_SERVICE_SEARCH_API + filterDTO.getUrlFilterString())
+                .uri(externalServerConfig.getSearch()
+                        + filterDTO.getUrlFilterString())
                 .retrieve()
                 .onStatus(
-                        HttpStatusCode::is4xxClientError,
+                        status -> status.is4xxClientError(),
                         getClientResponseMonoDataException()
                 )
                 .onStatus(
-                        HttpStatusCode::is5xxServerError,
+                        status -> status.is5xxServerError(),
                         getClientResponseMonoDataException()
                 )
                 .bodyToMono(Search.class)
@@ -47,23 +47,24 @@ public class CoinGeckoSearchAPIService extends CoinGeckoServiceApi {
                 );
     }
 
-    public Flux<Trending> getSearchTrendingFromGeckoApi(){
+    public Mono<Trending> getSearchTrendingFromGeckoApi(){
 
-        log.info("in getSearTRendingFromGeckoApi - Calling Gecko Api Service");
+        log.info("in getSearTRendingFromGeckoApi - Calling Gecko Api Service -> "
+                + externalServerConfig.getSearchTrending());
 
         return webClient
                 .get()
-                .uri(URL_GECKO_SERVICE_SEARCH_TRENDING_API)
+                .uri(externalServerConfig.getSearchTrending())
                 .retrieve()
                 .onStatus(
-                        HttpStatusCode::is4xxClientError,
+                        status -> status.is4xxClientError(),
                         getClientResponseMonoDataException()
                 )
                 .onStatus(
-                        HttpStatusCode::is5xxServerError,
+                        status -> status.is5xxServerError(),
                         getClientResponseMonoDataException()
                 )
-                .bodyToFlux(Trending.class)
+                .bodyToMono(Trending.class)
                 .doOnError(
                         ManageExceptionCoinGeckoServiceApi::throwServiceException
                 );
