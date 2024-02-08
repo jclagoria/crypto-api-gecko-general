@@ -59,6 +59,13 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.instancio/instancio -->
+		<dependency>
+			<groupId>org.instancio</groupId>
+			<artifactId>instancio</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
 
 	</dependencies>
 
