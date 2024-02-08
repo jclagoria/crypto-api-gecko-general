@@ -21,7 +21,6 @@ public class CoinGeckoGeneralServicesApi extends CoinGeckoServiceApi {
         this.externalServerConfig = externalServerConfig;
     }
 
-
     public Mono<Global> getGlobalData() {
 
         log.info("in getGlobalData - Calling Gecko Api Service -> " + externalServerConfig.getGlobal());
@@ -46,7 +45,7 @@ public class CoinGeckoGeneralServicesApi extends CoinGeckoServiceApi {
 
     public Mono<DecentralizedFinance> getDecentralizedFinance() {
 
-        log.info("n getGlobalData - Calling DecentralizedFinance -> " + getDecentralizedFinance());
+        log.info("getGlobalData - Calling DecentralizedFinance -> " + externalServerConfig.getDecentralized());
 
         return webClient
                 .get()

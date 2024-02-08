@@ -5,10 +5,8 @@ import ar.com.api.general.dto.SearchDTO;
 import ar.com.api.general.model.Search;
 import ar.com.api.general.model.Trending;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
