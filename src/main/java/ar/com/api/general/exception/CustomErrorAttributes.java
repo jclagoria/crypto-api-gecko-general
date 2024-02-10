@@ -6,26 +6,18 @@ import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 import java.util.Optional;
-
 @Configuration
 public class CustomErrorAttributes extends DefaultErrorAttributes {
-
     @Override
     public Map<String, Object> getErrorAttributes(ServerRequest webRequest, ErrorAttributeOptions options) {
 
         Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
-
-
         Optional<HttpStatus> errorStatus = determineHttpStatus(getError(webRequest));
-
-
         errorStatus.ifPresent(
                 httpStatus -> {
                     errorAttributes.replace("status", httpStatus.value());
@@ -35,7 +27,6 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
 
         return errorAttributes;
     }
-
     private Optional<HttpStatus> determineHttpStatus(Throwable error) {
 
         if(error instanceof CoinGeckoBadRequestException) {
@@ -43,7 +34,6 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         }
 
         if(error instanceof ResponseStatusException){
-            error.getMessage();
             return Optional.of(HttpStatus.BAD_REQUEST);
         }
 
@@ -53,7 +43,6 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         }
 
         return Optional.empty();
-
     }
 
 }

@@ -1,46 +1,35 @@
 package ar.com.api.general.services;
 
+import ar.com.api.general.configuration.ExternalServerConfig;
 import ar.com.api.general.model.DecentralizedFinance;
 import ar.com.api.general.model.Global;
-
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
 @Service
 @Slf4j
 public class CoinGeckoGeneralServicesApi extends CoinGeckoServiceApi {
-
-    @Value("${api.global}")
-    private String URL_GECKO_SERVICE_GLOBAL_API;
-
-    @Value("${api.decentralized}")
-    private String URL_GECKO_SERVICE_DECENTRALIZED_FINANCE_DEFI;
+    private ExternalServerConfig externalServerConfig;
     private WebClient webClient;
-
-    public CoinGeckoGeneralServicesApi(WebClient webClient) {
+    public CoinGeckoGeneralServicesApi(WebClient webClient, ExternalServerConfig externalServerConfig) {
         this.webClient = webClient;
+        this.externalServerConfig = externalServerConfig;
     }
-
-
     public Mono<Global> getGlobalData() {
 
-        log.info("in getGlobalData - Calling Gecko Api Service");
+        log.info("in getGlobalData - Calling Gecko Api Service -> " + externalServerConfig.getGlobal());
 
         return webClient
                 .get()
-                .uri(URL_GECKO_SERVICE_GLOBAL_API)
+                .uri(externalServerConfig.getGlobal())
                 .retrieve()
                 .onStatus(
-                        HttpStatusCode::is4xxClientError,
+                        status -> status.is4xxClientError(),
                         getClientResponseMonoDataException()
                 )
                 .onStatus(
-                        HttpStatusCode::is5xxServerError,
+                        status -> status.is5xxServerError(),
                         getClientResponseMonoServerException()
                 )
                 .bodyToMono(Global.class)
@@ -50,19 +39,18 @@ public class CoinGeckoGeneralServicesApi extends CoinGeckoServiceApi {
     }
 
     public Mono<DecentralizedFinance> getDecentralizedFinance() {
-
-        log.info("n getGlobalData - Calling DecentralizedFinance");
+        log.info("getGlobalData - Calling DecentralizedFinance -> " + externalServerConfig.getDecentralized());
 
         return webClient
                 .get()
-                .uri(URL_GECKO_SERVICE_DECENTRALIZED_FINANCE_DEFI)
+                .uri(externalServerConfig.getDecentralized())
                 .retrieve()
                 .onStatus(
-                        HttpStatusCode::is4xxClientError,
+                        status -> status.is4xxClientError(),
                         getClientResponseMonoDataException()
                 )
                 .onStatus(
-                        HttpStatusCode::is5xxServerError,
+                        status -> status.is5xxServerError(),
                         getClientResponseMonoServerException()
                 )
                 .bodyToMono(DecentralizedFinance.class)

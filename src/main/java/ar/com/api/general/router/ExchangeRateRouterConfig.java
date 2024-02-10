@@ -1,26 +1,27 @@
 package ar.com.api.general.router;
 
 import ar.com.api.general.configuration.ApiServiceConfig;
-import ar.com.api.general.handler.HealthApiHandler;
+import ar.com.api.general.handler.ExchangeRateApiHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
-
 @Configuration
-public class HealthRouterConfig extends AbstractRouterConfig {
+public class ExchangeRateRouterConfig extends AbstractRouterConfig {
     private ApiServiceConfig apiServiceConfig;
-    public HealthRouterConfig(ApiServiceConfig serviceConfig) {
+    public ExchangeRateRouterConfig(ApiServiceConfig serviceConfig) {
         this.apiServiceConfig = serviceConfig;
     }
     @Bean
-    public RouterFunction<ServerResponse> route(HealthApiHandler handler) {
+    public RouterFunction<ServerResponse> routeExchangeRate(ExchangeRateApiHandler handler) {
 
         return RouterFunctions
                 .route()
-                .GET(apiServiceConfig.getBaseURL() + apiServiceConfig.getHealthAPI(),
-                        handler::getStatusServiceCoinGecko)
+                .GET(
+                        apiServiceConfig.getBaseURL() + apiServiceConfig.getExchangeRates(),
+                        handler::getExchangeRateFromGeckoApi
+                )
                 .build();
     }
 

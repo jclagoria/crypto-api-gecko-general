@@ -1,0 +1,26 @@
+server:
+  port: 8090
+
+## URL Rest Services applicacion
+coins:
+  baseURL: 'api/coins'
+  healthAPI: '/health-api'
+  global: '/global'
+  decentralized: '/global/decentralized_finance_defi'
+  exchangeRates: '/exchange_rates'
+  search: '/search'
+  simplePrice: '/simple/price'
+  simpleTokePriceById: '/simple/token_price/{ids}'
+  searchTrending: '/search/trending'
+
+## Url Coin Gecko RestService
+api:
+  urlCoinGecko: 'https://api.coingecko.com/api/v3'
+  ping: '/ping'
+  global: '/global'
+  decentralized: '/global/decentralized_finance_defi'
+  exchangeRates: '/exchange_rates'
+  search: '/search'
+  simplePrice: '/simple/price'
+  simpleTokePriceById: '/simple/token_price/%s'
+  searchTrending: '/search/trending'

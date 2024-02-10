@@ -1,9 +1,8 @@
 package ar.com.api.general.services;
 
+import ar.com.api.general.configuration.ExternalServerConfig;
 import ar.com.api.general.model.ExchangeRate;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -12,27 +11,26 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class CoinGeckoServiceExchangeRatesApi extends CoinGeckoServiceApi {
     private WebClient wClient;
-
-    @Value("${api.exchangeRates}")
-    private String URL_GECKO_SERVICE_EXCHANGE_RATE_API;
-
-    public CoinGeckoServiceExchangeRatesApi(WebClient webClient) {
+    private ExternalServerConfig externalServerConfig;
+    public CoinGeckoServiceExchangeRatesApi(WebClient webClient, ExternalServerConfig externalServerConfig) {
         this.wClient = webClient;
+        this.externalServerConfig = externalServerConfig;
     }
     public Mono<ExchangeRate> getExchangeRatesFromGeckoApi() {
 
-        log.info("in getExchangeRatesFromGeckoApi - Calling Gecko Api Service");
+        log.info("in getExchangeRatesFromGeckoApi - Calling Gecko Api Service -> "
+                + externalServerConfig.getExchangeRates());
 
         return wClient
                 .get()
-                .uri(URL_GECKO_SERVICE_EXCHANGE_RATE_API)
+                .uri(externalServerConfig.getExchangeRates())
                 .retrieve()
                 .onStatus(
-                        HttpStatusCode::is4xxClientError,
+                        status -> status.is4xxClientError(),
                         getClientResponseMonoDataException()
                 )
                 .onStatus(
-                        HttpStatusCode::is5xxServerError,
+                        status -> status.is5xxServerError(),
                         getClientResponseMonoDataException()
                 )
                 .bodyToMono(ExchangeRate.class)
