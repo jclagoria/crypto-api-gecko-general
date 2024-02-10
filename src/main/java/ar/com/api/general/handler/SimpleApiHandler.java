@@ -14,55 +14,60 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-
 @Component
-@AllArgsConstructor
 @Slf4j
 public class SimpleApiHandler {
-
     private CoinGeckoSimpleApiService coinGeckoSimpleApiService;
-
-    public Mono<ServerResponse> getSimplePriceFromCoinGeckoApi(ServerRequest serverRequest){
-
-        SimplePriceFilterDTO filterDTO = SimplePriceFilterDTO
-                .builder()
-                .ids(serverRequest.queryParam("ids").get())
-                .vsCurrencies(serverRequest.queryParam("vsCurrencies").get())
-                .include24hrChange(serverRequest.queryParam("includeMarketCap"))
-                .include24hrVol(serverRequest.queryParam("include24hrVol"))
-                .includeLastUpdatedAt(serverRequest.queryParam("include24hrChange"))
-                .includeMarketCap(serverRequest.queryParam("includeLastUpdatedAt"))
-                .precision(serverRequest.queryParam("precision"))
-                .build();
-
-        return ServerResponse
-                .ok()
-                .body(
-                        coinGeckoSimpleApiService.getSimplePriceApiService(filterDTO),
-                        Map.class
-                );
+    public SimpleApiHandler(CoinGeckoSimpleApiService simpleApiService) {
+        this.coinGeckoSimpleApiService = simpleApiService;
     }
+    public Mono<ServerResponse> getSimplePriceFromCoinGeckoApi(ServerRequest serverRequest){
+        log.info("Fetching simple price from CoinGecko API");
 
+        return Mono.just(serverRequest)
+                .flatMap(req -> {
+                    SimplePriceFilterDTO simplePriceFilterDTO = createSimplePriceFilterDTO(serverRequest);
+                    return ServerResponse.ok()
+                            .body(coinGeckoSimpleApiService
+                                    .getSimplePriceApiService(simplePriceFilterDTO), Map.class);
+                }).switchIfEmpty(ServerResponse.badRequest().build());
+    }
     public Mono<ServerResponse> getSimplePriceTokenByIDFromCoinGeckoApi(ServerRequest serverRequest){
+        log.info("Fetching simple price token by ID from CoinGecko API");
 
-        TokenPriceByIdDTO filterDTO = TokenPriceByIdDTO
-                .builder()
-                .ids(serverRequest.pathVariable("ids"))
-                .contractAddresses(serverRequest.queryParam("contractAddress").get())
-                .vsCurrencies(serverRequest.queryParam("vsCurrencies").get())
-                .include24hrChange(serverRequest.queryParam("include24hrChange"))
-                .include24hrVol(serverRequest.queryParam("include24hrVol"))
-                .includeLastUpdatedAt(serverRequest.queryParam("includeLastUpdatedAt"))
-                .includeMarketCap(serverRequest.queryParam("includeMarketCap"))
-                .precision(serverRequest.queryParam("precision"))
+        return Mono.just(serverRequest)
+                .flatMap(req -> {
+                    TokenPriceByIdDTO tokenPriceByIdDTO = createTokenPriceByIdDTO(serverRequest);
+                    return ServerResponse.ok().body(coinGeckoSimpleApiService.getSimplePriceTokenById(tokenPriceByIdDTO), Map.class);
+                })
+                .switchIfEmpty(ServerResponse.badRequest().build());
+    }
+    private SimplePriceFilterDTO createSimplePriceFilterDTO(ServerRequest sRequest) {
+        return SimplePriceFilterDTO.builder()
+                .ids(sRequest.queryParam("ids")
+                        .orElseThrow(() -> new IllegalArgumentException("IDs parameter is required")))
+                .vsCurrencies(sRequest.queryParam("vsCurrencies")
+                        .orElseThrow(() -> new IllegalArgumentException("vsCurrencies parameter is required")))
+                .includeMarketCap(sRequest.queryParam("includeMarketCap"))
+                .include24hrVol(sRequest.queryParam("include24hrVol"))
+                .include24hrChange(sRequest.queryParam("include24hrChange"))
+                .includeLastUpdatedAt(sRequest.queryParam("includeLastUpdatedAt"))
+                .precision(sRequest.queryParam("precision"))
                 .build();
-
-        return ServerResponse
-                .ok()
-                .body(
-                        coinGeckoSimpleApiService.getSimplePriceTokenById(filterDTO),
-                        Map.class
-                );
+    }
+    private TokenPriceByIdDTO createTokenPriceByIdDTO(ServerRequest sRequest) {
+        return TokenPriceByIdDTO.builder()
+                .ids(sRequest.pathVariable("ids"))
+                .contractAddresses(sRequest.queryParam("contractAddress")
+                        .orElseThrow(() -> new IllegalArgumentException("Contract address parameter is required")))
+                .vsCurrencies(sRequest.queryParam("vsCurrencies")
+                        .orElseThrow(() -> new IllegalArgumentException("vsCurrencies parameter is required")))
+                .includeMarketCap(sRequest.queryParam("includeMarketCap"))
+                .include24hrVol(sRequest.queryParam("include24hrVol"))
+                .include24hrChange(sRequest.queryParam("include24hrChange"))
+                .includeLastUpdatedAt(sRequest.queryParam("includeLastUpdatedAt"))
+                .precision(sRequest.queryParam("precision"))
+                .build();
     }
 
 }

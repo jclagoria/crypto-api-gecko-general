@@ -1,10 +1,7 @@
 package ar.com.api.general.handler;
 
-
-import ar.com.api.general.model.Ping;
 import ar.com.api.general.services.CoinGeckoServiceStatus;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
@@ -13,21 +10,24 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @Component
-@AllArgsConstructor
 @Slf4j
 public class HealthApiHandler {
- 
- private CoinGeckoServiceStatus serviceStatus;
+    private CoinGeckoServiceStatus serviceStatus;
+    public HealthApiHandler(CoinGeckoServiceStatus healthService) {
+        this.serviceStatus = healthService;
+    }
+    public Mono<ServerResponse> getStatusServiceCoinGecko(ServerRequest serverRequest) {
+        log.info("Fetching CoinGecko service status");
 
- public Mono<ServerResponse> getStatusServiceCoinGecko(ServerRequest serverRequest) {
+        return serviceStatus.getStatusCoinGeckoService()
+                .flatMap(ping -> ServerResponse.ok().bodyValue(ping))
+                .switchIfEmpty(ServerResponse.notFound().build())
+                .onErrorResume(e -> {
+                    log.error("Error fetching CoinGecko service status", e);
+                    return ServerResponse.status(500).bodyValue("Error fetching service status");
+                });
+    }
 
-  log.info("In getStatusServiceCoinGecko");
 
-  return ServerResponse
-                .ok()
-                .body(
-                     serviceStatus.getStatusCoinGeckoService(), 
-                     Ping.class);
- }
 
 }
