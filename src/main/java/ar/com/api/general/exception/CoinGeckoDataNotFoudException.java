@@ -1,7 +1,5 @@
 package ar.com.api.general.exception;
-
 public class CoinGeckoDataNotFoudException extends RuntimeException {
-
     public CoinGeckoDataNotFoudException() {
         super("Data nor Found");
     }
