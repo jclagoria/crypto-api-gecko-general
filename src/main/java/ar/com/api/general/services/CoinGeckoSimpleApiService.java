@@ -13,7 +13,6 @@ import java.util.Map;
 @Service
 @Slf4j
 public class CoinGeckoSimpleApiService extends CoinGeckoServiceApi {
-
     private ExternalServerConfig externalServerConfig;
     private WebClient webClient;
     public CoinGeckoSimpleApiService(WebClient wClient, ExternalServerConfig externalServerConfig) {
@@ -44,7 +43,6 @@ public class CoinGeckoSimpleApiService extends CoinGeckoServiceApi {
                         ManageExceptionCoinGeckoServiceApi::throwServiceException
                 );
     }
-
     public Mono<Map> getSimplePriceTokenById(TokenPriceByIdDTO filterDTO){
 
         log.info("in getSimplePriceTokenById - Calling Gecko Api Service -> " +
@@ -72,7 +70,5 @@ public class CoinGeckoSimpleApiService extends CoinGeckoServiceApi {
                         ManageExceptionCoinGeckoServiceApi::throwServiceException
                 );
     }
-
-
 
 }

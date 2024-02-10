@@ -2,12 +2,9 @@ package ar.com.api.general.services;
 
 import ar.com.api.general.configuration.ExternalServerConfig;
 import ar.com.api.general.model.Ping;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatusCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Service

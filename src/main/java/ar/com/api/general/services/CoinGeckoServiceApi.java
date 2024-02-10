@@ -19,7 +19,6 @@ public class CoinGeckoServiceApi {
                     );
         };
     }
-
     @NotNull
     static Function<ClientResponse, Mono<? extends Throwable>> getClientResponseMonoServerException() {
         return clientResponse ->
@@ -30,8 +29,4 @@ public class CoinGeckoServiceApi {
                     );
         };
     }
-
-
-
-
 }

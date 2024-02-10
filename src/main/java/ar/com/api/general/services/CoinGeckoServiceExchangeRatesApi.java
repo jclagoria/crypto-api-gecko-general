@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 public class CoinGeckoServiceExchangeRatesApi extends CoinGeckoServiceApi {
     private WebClient wClient;
     private ExternalServerConfig externalServerConfig;
-
     public CoinGeckoServiceExchangeRatesApi(WebClient webClient, ExternalServerConfig externalServerConfig) {
         this.wClient = webClient;
         this.externalServerConfig = externalServerConfig;
