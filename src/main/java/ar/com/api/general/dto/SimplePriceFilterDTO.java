@@ -42,7 +42,7 @@ public class SimplePriceFilterDTO implements IFilter, Serializable {
                 .append("&include_last_updated_at=")
                     .append(includeLastUpdatedAt.isPresent() ? includeLastUpdatedAt.get() : "false")
                 .append("&precision=")
-                    .append(precision.isPresent() ? precision.get() : "0");
+                    .append(precision.orElse("0"));
 
         return strFilter.toString();
     }
