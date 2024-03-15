@@ -15,6 +15,7 @@ public class CoinGeckoSearchAPIService extends CoinGeckoServiceApi {
 
     private ExternalServerConfig externalServerConfig;
     private WebClient webClient;
+
     public CoinGeckoSearchAPIService(WebClient wClient, ExternalServerConfig externalServerConfig) {
         this.webClient = wClient;
         this.externalServerConfig = externalServerConfig;
@@ -45,7 +46,7 @@ public class CoinGeckoSearchAPIService extends CoinGeckoServiceApi {
                 );
     }
 
-    public Mono<Trending> getSearchTrendingFromGeckoApi(){
+    public Mono<Trending> getSearchTrendingFromGeckoApi() {
 
         log.info("in getSearTRendingFromGeckoApi - Calling Gecko Api Service -> "
                 + externalServerConfig.getSearchTrending());

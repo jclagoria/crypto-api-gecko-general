@@ -6,11 +6,10 @@ public class ManageExceptionCoinGeckoServiceApi {
     public static void throwServiceException(Throwable throwable) {
         throw new
                 ServiceException(
-                    throwable.getMessage(),
-                    throwable.fillInStackTrace()
+                throwable.getMessage(),
+                throwable.fillInStackTrace()
         );
     }
-
 
 
 }

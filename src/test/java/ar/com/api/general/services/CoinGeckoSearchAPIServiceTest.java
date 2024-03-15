@@ -9,7 +9,6 @@ import ar.com.api.general.model.TrendingCoin;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mockito;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -82,7 +81,7 @@ class CoinGeckoSearchAPIServiceTest {
                         throwable instanceof ServiceException
                                 && throwable.getCause() instanceof WebClientResponseException
                                 && ((WebClientResponseException) throwable.getCause())
-                                    .getStatusCode().is4xxClientError())
+                                .getStatusCode().is4xxClientError())
                 .verify();
     }
 
@@ -100,12 +99,12 @@ class CoinGeckoSearchAPIServiceTest {
                         throwable instanceof ServiceException
                                 && throwable.getCause() instanceof WebClientResponseException
                                 && ((WebClientResponseException) throwable.getCause())
-                                    .getStatusCode().is5xxServerError() )
+                                .getStatusCode().is5xxServerError())
                 .verify();
     }
 
     @Test
-    public void getSearchTrendingFromGeckoApi_ShouldReturnTrendingSuccessfully () {
+    public void getSearchTrendingFromGeckoApi_ShouldReturnTrendingSuccessfully() {
         Trending trendingExpected = Instancio.create(Trending.class);
         when(responseSpecMock.bodyToMono(Trending.class)).thenReturn(Mono.just(trendingExpected));
 
@@ -130,9 +129,9 @@ class CoinGeckoSearchAPIServiceTest {
 
         StepVerifier.create(resultException)
                 .expectErrorMatches(throwable ->
-                    throwable instanceof ServiceException &&
-                            throwable.getCause() instanceof WebClientResponseException &&
-                            ((WebClientResponseException)throwable.getCause()).getStatusCode().is4xxClientError()
+                        throwable instanceof ServiceException &&
+                                throwable.getCause() instanceof WebClientResponseException &&
+                                ((WebClientResponseException) throwable.getCause()).getStatusCode().is4xxClientError()
                 ).verify();
     }
 

@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 import java.util.Optional;
+
 @Configuration
 public class CustomErrorAttributes extends DefaultErrorAttributes {
     @Override
@@ -27,18 +28,19 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
 
         return errorAttributes;
     }
+
     private Optional<HttpStatus> determineHttpStatus(Throwable error) {
 
-        if(error instanceof CoinGeckoBadRequestException) {
+        if (error instanceof CoinGeckoBadRequestException) {
             return Optional.of(HttpStatus.NOT_FOUND);
         }
 
-        if(error instanceof ResponseStatusException){
+        if (error instanceof ResponseStatusException) {
             return Optional.of(HttpStatus.BAD_REQUEST);
         }
 
-        if(error instanceof CoinGeckoServerException ||
-                error instanceof ServiceException){
+        if (error instanceof CoinGeckoServerException ||
+                error instanceof ServiceException) {
             return Optional.of(HttpStatus.SERVICE_UNAVAILABLE);
         }
 

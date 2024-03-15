@@ -11,9 +11,11 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
 public class HealthRouterConfig extends AbstractRouterConfig {
     private ApiServiceConfig apiServiceConfig;
+
     public HealthRouterConfig(ApiServiceConfig serviceConfig) {
         this.apiServiceConfig = serviceConfig;
     }
+
     @Bean
     public RouterFunction<ServerResponse> route(HealthApiHandler handler) {
 

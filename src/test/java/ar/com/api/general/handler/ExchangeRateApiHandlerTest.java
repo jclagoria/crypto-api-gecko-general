@@ -7,16 +7,10 @@ import ar.com.api.general.services.CoinGeckoServiceExchangeRatesApi;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,11 +46,11 @@ class ExchangeRateApiHandlerTest {
         webTestClient.get()
                 .uri(
                         apiServiceConfigMock.getBaseURL() +
-                        apiServiceConfigMock.getExchangeRates())
+                                apiServiceConfigMock.getExchangeRates())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(ExchangeRate.class)
-                    .isEqualTo(exchangeRateMock);
+                .isEqualTo(exchangeRateMock);
     }
 
     @Test
@@ -65,7 +59,7 @@ class ExchangeRateApiHandlerTest {
                 .thenReturn(Mono.error(new IllegalArgumentException("Not Found")));
 
         webTestClient.get()
-                .uri(apiServiceConfigMock.getBaseURL() )
+                .uri(apiServiceConfigMock.getBaseURL())
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.NOT_FOUND);
     }

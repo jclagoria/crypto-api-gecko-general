@@ -59,7 +59,7 @@ class CoinGeckoServiceStatusTest {
                 .expectErrorMatches(throwable ->
                         throwable instanceof ServiceException &&
                                 throwable.getCause() instanceof WebClientResponseException &&
-                                ((WebClientResponseException)throwable.getCause())
+                                ((WebClientResponseException) throwable.getCause())
                                         .getStatusCode().is4xxClientError())
                 .verify();
     }
@@ -77,7 +77,7 @@ class CoinGeckoServiceStatusTest {
                 .expectErrorMatches(throwable ->
                         throwable instanceof ServiceException &&
                                 throwable.getCause() instanceof WebClientResponseException &&
-                                ((WebClientResponseException)throwable.getCause())
+                                ((WebClientResponseException) throwable.getCause())
                                         .getStatusCode().is5xxServerError())
                 .verify();
     }

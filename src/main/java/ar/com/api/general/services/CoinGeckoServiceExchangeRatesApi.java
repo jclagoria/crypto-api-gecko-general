@@ -12,10 +12,12 @@ import reactor.core.publisher.Mono;
 public class CoinGeckoServiceExchangeRatesApi extends CoinGeckoServiceApi {
     private WebClient wClient;
     private ExternalServerConfig externalServerConfig;
+
     public CoinGeckoServiceExchangeRatesApi(WebClient webClient, ExternalServerConfig externalServerConfig) {
         this.wClient = webClient;
         this.externalServerConfig = externalServerConfig;
     }
+
     public Mono<ExchangeRate> getExchangeRatesFromGeckoApi() {
 
         log.info("in getExchangeRatesFromGeckoApi - Calling Gecko Api Service -> "

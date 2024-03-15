@@ -11,34 +11,34 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class CoinGeckoServiceStatus extends CoinGeckoServiceApi {
 
- private ExternalServerConfig externalServerConfig;
- private WebClient webClient;
+    private ExternalServerConfig externalServerConfig;
+    private WebClient webClient;
 
- public CoinGeckoServiceStatus(WebClient webClient, ExternalServerConfig externalServerConfig) {
-  this.webClient = webClient;
-  this.externalServerConfig = externalServerConfig;
- }
+    public CoinGeckoServiceStatus(WebClient webClient, ExternalServerConfig externalServerConfig) {
+        this.webClient = webClient;
+        this.externalServerConfig = externalServerConfig;
+    }
 
- public Mono<Ping> getStatusCoinGeckoService() {
-  
-  log.info("Calling method -> " + externalServerConfig.getPing());
+    public Mono<Ping> getStatusCoinGeckoService() {
 
-  return webClient
-         .get()
-         .uri(externalServerConfig.getPing())
-         .retrieve()
-          .onStatus(
-                  status -> status.is4xxClientError(),
-                  getClientResponseMonoDataException()
-          )
-          .onStatus(
-                  status -> status.is5xxServerError(),
-                  getClientResponseMonoDataException()
-          )
-         .bodyToMono(Ping.class)
-          .doOnError(
-                  ManageExceptionCoinGeckoServiceApi::throwServiceException
-          );
- }
+        log.info("Calling method -> " + externalServerConfig.getPing());
+
+        return webClient
+                .get()
+                .uri(externalServerConfig.getPing())
+                .retrieve()
+                .onStatus(
+                        status -> status.is4xxClientError(),
+                        getClientResponseMonoDataException()
+                )
+                .onStatus(
+                        status -> status.is5xxServerError(),
+                        getClientResponseMonoDataException()
+                )
+                .bodyToMono(Ping.class)
+                .doOnError(
+                        ManageExceptionCoinGeckoServiceApi::throwServiceException
+                );
+    }
 
 }

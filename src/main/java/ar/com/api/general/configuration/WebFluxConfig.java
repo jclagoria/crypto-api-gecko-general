@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.function.client.WebClient;
+
 @Configuration
 @EnableWebFlux
 @Slf4j
@@ -14,6 +15,7 @@ public class WebFluxConfig implements WebFluxConfigurer {
 
     @Value("${api.urlCoinGecko}")
     private String URL_GECKO_SERVICE;
+
     @Bean
     public WebClient getWebClient() {
         log.info("Create and return WebClient -> " + URL_GECKO_SERVICE);

@@ -5,6 +5,7 @@ import ar.com.api.general.dto.SimplePriceFilterDTO;
 import ar.com.api.general.dto.TokenPriceByIdDTO;
 import ar.com.api.general.exception.ServiceException;
 import ar.com.api.general.utils.WebClientMockUtils;
+import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.assertj.core.api.Assertions;
 
 class CoinGeckoSimpleApiServiceTest {
     private CoinGeckoSimpleApiService coinGeckoSimpleApiServiceMock;
@@ -71,7 +71,7 @@ class CoinGeckoSimpleApiServiceTest {
                 .expectErrorMatches(throwable ->
                         throwable instanceof ServiceException &&
                                 throwable.getCause() instanceof WebClientResponseException &&
-                                ((WebClientResponseException)throwable.getCause())
+                                ((WebClientResponseException) throwable.getCause())
                                         .getStatusCode().is4xxClientError())
                 .verify();
     }
@@ -91,7 +91,7 @@ class CoinGeckoSimpleApiServiceTest {
                 .expectErrorMatches(throwable ->
                         throwable instanceof ServiceException &&
                                 throwable.getCause() instanceof WebClientResponseException &&
-                                ((WebClientResponseException)throwable.getCause())
+                                ((WebClientResponseException) throwable.getCause())
                                         .getStatusCode().is5xxServerError())
                 .verify();
     }
@@ -132,7 +132,7 @@ class CoinGeckoSimpleApiServiceTest {
                 .expectErrorMatches(throwable ->
                         throwable instanceof ServiceException &&
                                 throwable.getCause() instanceof WebClientResponseException &&
-                                ((WebClientResponseException)throwable.getCause())
+                                ((WebClientResponseException) throwable.getCause())
                                         .getStatusCode().is4xxClientError())
                 .verify();
     }
@@ -153,7 +153,7 @@ class CoinGeckoSimpleApiServiceTest {
                 .expectErrorMatches(throwable ->
                         throwable instanceof ServiceException &&
                                 throwable.getCause() instanceof WebClientResponseException &&
-                                ((WebClientResponseException)throwable.getCause())
+                                ((WebClientResponseException) throwable.getCause())
                                         .getStatusCode().is5xxServerError())
                 .verify();
     }

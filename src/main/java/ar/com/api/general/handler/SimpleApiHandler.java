@@ -3,25 +3,24 @@ package ar.com.api.general.handler;
 import ar.com.api.general.dto.SimplePriceFilterDTO;
 import ar.com.api.general.dto.TokenPriceByIdDTO;
 import ar.com.api.general.services.CoinGeckoSimpleApiService;
-
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+
 @Component
 @Slf4j
 public class SimpleApiHandler {
     private CoinGeckoSimpleApiService coinGeckoSimpleApiService;
+
     public SimpleApiHandler(CoinGeckoSimpleApiService simpleApiService) {
         this.coinGeckoSimpleApiService = simpleApiService;
     }
-    public Mono<ServerResponse> getSimplePriceFromCoinGeckoApi(ServerRequest serverRequest){
+
+    public Mono<ServerResponse> getSimplePriceFromCoinGeckoApi(ServerRequest serverRequest) {
         log.info("Fetching simple price from CoinGecko API");
 
         return Mono.just(serverRequest)
@@ -32,7 +31,8 @@ public class SimpleApiHandler {
                                     .getSimplePriceApiService(simplePriceFilterDTO), Map.class);
                 }).switchIfEmpty(ServerResponse.badRequest().build());
     }
-    public Mono<ServerResponse> getSimplePriceTokenByIDFromCoinGeckoApi(ServerRequest serverRequest){
+
+    public Mono<ServerResponse> getSimplePriceTokenByIDFromCoinGeckoApi(ServerRequest serverRequest) {
         log.info("Fetching simple price token by ID from CoinGecko API");
 
         return Mono.just(serverRequest)
@@ -42,6 +42,7 @@ public class SimpleApiHandler {
                 })
                 .switchIfEmpty(ServerResponse.badRequest().build());
     }
+
     private SimplePriceFilterDTO createSimplePriceFilterDTO(ServerRequest sRequest) {
         return SimplePriceFilterDTO.builder()
                 .ids(sRequest.queryParam("ids")
@@ -55,6 +56,7 @@ public class SimpleApiHandler {
                 .precision(sRequest.queryParam("precision"))
                 .build();
     }
+
     private TokenPriceByIdDTO createTokenPriceByIdDTO(ServerRequest sRequest) {
         return TokenPriceByIdDTO.builder()
                 .ids(sRequest.pathVariable("ids"))

@@ -12,11 +12,14 @@ import reactor.core.publisher.Mono;
 public abstract class AbstractValidationHandler<T, U extends Validator> {
     private final Class<T> validationClass;
     private final U validator;
+
     protected AbstractValidationHandler(Class<T> clazz, U validator) {
         this.validationClass = clazz;
         this.validator = validator;
     }
+
     abstract protected Mono<ServerResponse> processBody(T validBody, final ServerRequest originalRequest);
+
     public final Mono<ServerResponse> handleRequest(final ServerRequest request) {
         return request.bodyToMono(this.validationClass)
                 .flatMap(body -> {

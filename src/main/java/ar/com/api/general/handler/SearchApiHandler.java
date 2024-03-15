@@ -2,7 +2,6 @@ package ar.com.api.general.handler;
 
 import ar.com.api.general.dto.SearchDTO;
 import ar.com.api.general.model.Search;
-import ar.com.api.general.model.Trending;
 import ar.com.api.general.services.CoinGeckoSearchAPIService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,10 +18,12 @@ import reactor.core.publisher.Mono;
 public class SearchApiHandler {
     private CoinGeckoSearchAPIService searchAPIService;
     private Validator validator;
+
     public SearchApiHandler(CoinGeckoSearchAPIService sApiService, Validator validator) {
         this.searchAPIService = sApiService;
         this.validator = validator;
     }
+
     public Mono<ServerResponse> getListOfCoinsWithSearchAPI(ServerRequest sRequest) {
 
         log.info("In SearchApiHandler.getListOfCoinsWithSearchAPI");
@@ -32,7 +33,7 @@ public class SearchApiHandler {
                         .builder()
                         .queryParam(
                                 sRequest.queryParam("queryParam").get())
-                        .build() )
+                        .build())
                 .flatMap(this::validateSearchDTO)
                 .flatMap(filterDTO -> ServerResponse.ok()
                         .body(searchAPIService
@@ -41,6 +42,7 @@ public class SearchApiHandler {
                 .onErrorResume(e -> ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValue(e.getMessage()));
 
     }
+
     public Mono<ServerResponse> getTrendingOfCoinsAPI(ServerRequest serverRequest) {
         log.info("Fetching trending coins");
 
@@ -49,6 +51,7 @@ public class SearchApiHandler {
                 .switchIfEmpty(Mono.defer(() -> ServerResponse.noContent().build()));
 
     }
+
     private Mono<SearchDTO> validateSearchDTO(SearchDTO filterDTO) {
         Errors errors = new BeanPropertyBindingResult(filterDTO, SearchDTO.class.getName());
         validator.validate(filterDTO, errors);
