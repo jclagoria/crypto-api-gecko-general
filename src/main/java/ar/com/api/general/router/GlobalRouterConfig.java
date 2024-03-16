@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
-public class GlobalRouterConfig extends AbstractRouterConfig {
+public class GlobalRouterConfig {
     private ApiServiceConfig apiServiceConfig;
 
     public GlobalRouterConfig(ApiServiceConfig apiServiceConfig) {

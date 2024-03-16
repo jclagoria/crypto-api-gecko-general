@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
-public class HealthRouterConfig extends AbstractRouterConfig {
+public class HealthRouterConfig {
     private ApiServiceConfig apiServiceConfig;
 
     public HealthRouterConfig(ApiServiceConfig serviceConfig) {

@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
-public class ExchangeRateRouterConfig extends AbstractRouterConfig {
+public class ExchangeRateRouterConfig {
     private ApiServiceConfig apiServiceConfig;
 
     public ExchangeRateRouterConfig(ApiServiceConfig serviceConfig) {
