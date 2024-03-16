@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
 public class ExchangeRateRouterConfig {
-    private ApiServiceConfig apiServiceConfig;
+    private final ApiServiceConfig apiServiceConfig;
 
     public ExchangeRateRouterConfig(ApiServiceConfig serviceConfig) {
         this.apiServiceConfig = serviceConfig;

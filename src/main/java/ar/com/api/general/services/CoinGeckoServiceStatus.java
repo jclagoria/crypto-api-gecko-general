@@ -1,21 +1,21 @@
 package ar.com.api.general.services;
 
 import ar.com.api.general.configuration.ExternalServerConfig;
+import ar.com.api.general.configuration.HttpServiceCall;
 import ar.com.api.general.model.Ping;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
-public class CoinGeckoServiceStatus extends CoinGeckoServiceApi {
+public class CoinGeckoServiceStatus {
 
-    private ExternalServerConfig externalServerConfig;
-    private WebClient webClient;
+    private final ExternalServerConfig externalServerConfig;
+    private final HttpServiceCall httpServiceCall;
 
-    public CoinGeckoServiceStatus(WebClient webClient, ExternalServerConfig externalServerConfig) {
-        this.webClient = webClient;
+    public CoinGeckoServiceStatus(HttpServiceCall serviceCall, ExternalServerConfig externalServerConfig) {
+        this.httpServiceCall = serviceCall;
         this.externalServerConfig = externalServerConfig;
     }
 
@@ -23,22 +23,7 @@ public class CoinGeckoServiceStatus extends CoinGeckoServiceApi {
 
         log.info("Calling method -> " + externalServerConfig.getPing());
 
-        return webClient
-                .get()
-                .uri(externalServerConfig.getPing())
-                .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError(),
-                        getClientResponseMonoDataException()
-                )
-                .onStatus(
-                        status -> status.is5xxServerError(),
-                        getClientResponseMonoDataException()
-                )
-                .bodyToMono(Ping.class)
-                .doOnError(
-                        ManageExceptionCoinGeckoServiceApi::throwServiceException
-                );
+        return null;
     }
 
 }

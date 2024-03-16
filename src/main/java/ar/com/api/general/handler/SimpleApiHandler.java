@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 @Slf4j
 public class SimpleApiHandler {
-    private CoinGeckoSimpleApiService coinGeckoSimpleApiService;
+    private final CoinGeckoSimpleApiService coinGeckoSimpleApiService;
 
     public SimpleApiHandler(CoinGeckoSimpleApiService simpleApiService) {
         this.coinGeckoSimpleApiService = simpleApiService;

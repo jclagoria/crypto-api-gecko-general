@@ -1,6 +1,5 @@
 package ar.com.api.general.handler;
 
-import ar.com.api.general.exception.CoinGeckoDataNotFoudException;
 import ar.com.api.general.services.CoinGeckoGeneralServicesApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class GlobalApiHandler {
-    private CoinGeckoGeneralServicesApi generalService;
+    private final CoinGeckoGeneralServicesApi generalService;
     public GlobalApiHandler(CoinGeckoGeneralServicesApi generalService) {
         this.generalService = generalService;
     }
@@ -20,7 +19,7 @@ public class GlobalApiHandler {
 
         return generalService.getGlobalData()
                 .flatMap(data -> ServerResponse.ok().bodyValue(data))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new CoinGeckoDataNotFoudException("Global data not found"))))
+                .switchIfEmpty(ServerResponse.notFound().build())
                 .onErrorResume(e -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .bodyValue("Error fetching global data: " + e.getMessage()));
     }
@@ -29,7 +28,7 @@ public class GlobalApiHandler {
 
         return generalService.getDecentralizedFinance()
                 .flatMap(defi -> ServerResponse.ok().bodyValue(defi))
-                .switchIfEmpty(Mono.defer(() -> ServerResponse.notFound().build()))
+                .switchIfEmpty(ServerResponse.notFound().build())
                 .onErrorResume(e -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .bodyValue("Error fetching decentralized finance data: " + e.getMessage()));
     }

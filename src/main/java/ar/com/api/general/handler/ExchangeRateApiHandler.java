@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class ExchangeRateApiHandler {
-    private CoinGeckoServiceExchangeRatesApi exchangeRatesApi;
+    private final CoinGeckoServiceExchangeRatesApi exchangeRatesApi;
 
     public ExchangeRateApiHandler(CoinGeckoServiceExchangeRatesApi apiService) {
         this.exchangeRatesApi = apiService;

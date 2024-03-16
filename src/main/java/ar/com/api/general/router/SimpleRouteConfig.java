@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
 public class SimpleRouteConfig {
-    private ApiServiceConfig apiServiceConfig;
+    private final ApiServiceConfig apiServiceConfig;
 
     public SimpleRouteConfig(ApiServiceConfig apiServiceConfig) {
         this.apiServiceConfig = apiServiceConfig;

@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
 public class HealthRouterConfig {
-    private ApiServiceConfig apiServiceConfig;
+    private final ApiServiceConfig apiServiceConfig;
 
     public HealthRouterConfig(ApiServiceConfig serviceConfig) {
         this.apiServiceConfig = serviceConfig;

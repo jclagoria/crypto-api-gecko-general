@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class HealthApiHandler {
-    private CoinGeckoServiceStatus serviceStatus;
+    private final CoinGeckoServiceStatus serviceStatus;
 
     public HealthApiHandler(CoinGeckoServiceStatus healthService) {
         this.serviceStatus = healthService;

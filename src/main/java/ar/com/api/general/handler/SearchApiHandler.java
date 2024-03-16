@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class SearchApiHandler {
-    private CoinGeckoSearchAPIService searchAPIService;
+    private final CoinGeckoSearchAPIService searchAPIService;
     private Validator validator;
 
     public SearchApiHandler(CoinGeckoSearchAPIService sApiService, Validator validator) {
@@ -38,7 +38,7 @@ public class SearchApiHandler {
                 .flatMap(filterDTO -> ServerResponse.ok()
                         .body(searchAPIService
                                 .getSearchFromGeckoApi(filterDTO), Search.class))
-                .switchIfEmpty(ServerResponse.noContent().build())
+                .switchIfEmpty(ServerResponse.notFound().build())
                 .onErrorResume(e -> ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValue(e.getMessage()));
 
     }

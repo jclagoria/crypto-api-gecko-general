@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
 public class SearchRouterConfig {
-    private ApiServiceConfig apiServiceConfig;
+    private final ApiServiceConfig apiServiceConfig;
 
     public SearchRouterConfig(ApiServiceConfig apiServiceConfig) {
         this.apiServiceConfig = apiServiceConfig;
