@@ -20,10 +20,9 @@ public class CoinGeckoServiceStatus {
     }
 
     public Mono<Ping> getStatusCoinGeckoService() {
+        log.info("Calling endpoint on GeckoApi {}", externalServerConfig.getPing());
 
-        log.info("Calling method -> " + externalServerConfig.getPing());
-
-        return null;
+        return httpServiceCall.getMonoObject(externalServerConfig.getPing(), Ping.class);
     }
 
 }
