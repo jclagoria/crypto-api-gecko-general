@@ -2,6 +2,7 @@ package ar.com.api.general.handler
 
 import ar.com.api.general.enums.ErrorTypeEnum
 import ar.com.api.general.exception.ApiClientErrorException
+import ar.com.api.general.model.DecentralizedFinance
 import ar.com.api.general.model.Global
 import ar.com.api.general.services.CoinGeckoGeneralServicesApi
 import org.instancio.Instancio
@@ -56,7 +57,7 @@ class GlobalApiHandlerTest extends Specification {
                 .verifyComplete()
     }
 
-    def "GetGlobalDataFromGeckoApi  handles and error gracefully"() {
+    def "GetGlobalDataFromGeckoApi handles and error gracefully"() {
         given: "Mocked ServerRequest and GlobalApiHandler return Error Scenario"
         coinGeckoGeneralServicesApiMock.getGlobalData() >>
                 Mono.error(new RuntimeException("An error Occurred"))
@@ -74,4 +75,53 @@ class GlobalApiHandlerTest extends Specification {
                 .verify()
     }
 
+    def "GetDecentralizedFinanceDefi return successfully a ServerResponse with a HttpStatus Ok"() {
+        given: "Mocked ServerResponse and DecentralizedFinance mock object and GlobalApiHandler return HttpStatus Ok"
+        def expectedObject = Instancio.create(DecentralizedFinance.class)
+        coinGeckoGeneralServicesApiMock.getDecentralizedFinance() >> Mono.just(expectedObject)
+
+        when: "GetDecentralizedFinanceDefi is called and return successfully ServerResponse"
+        def actualResponseObject = apiHandler.getDecentralizedFinanceDefi(serverRequestMock)
+
+        then: "It returns a ServerResponse with HttpResponse 200 Ok"
+        StepVerifier.create(actualResponseObject)
+                .expectNextMatches {decentralizedFinanceObject ->
+                    decentralizedFinanceObject.statusCode().is2xxSuccessful() &&
+                            decentralizedFinanceObject.headers().getContentType() == MediaType.APPLICATION_JSON
+                }
+                .verifyComplete()
+    }
+
+    def "GetDecentralizedFinanceDefi returns not found when the service return from the API Service"() {
+        given: "Mocked ServerRequest and GlobalApiHandler return Not Found"
+        coinGeckoGeneralServicesApiMock.getDecentralizedFinance() >> Mono.empty()
+
+        when: "GetDecentralizedFinanceDefi is called and return a ServerResponse with Not Found Status"
+        def actualResponseObject = apiHandler.getDecentralizedFinanceDefi(serverRequestMock)
+
+        then: "It returns a Not Found Response"
+        StepVerifier.create(actualResponseObject)
+                .expectNextMatches {response ->
+                    response.statusCode() == HttpStatus.NOT_FOUND
+                }
+                .verifyComplete()
+    }
+
+    def "GetDecentralizedFinanceDefi handles and error gracefully"() {
+        given: "Mocked ServerRequest and GlobalApiHandler return Error Scenario"
+        coinGeckoGeneralServicesApiMock.getDecentralizedFinance() >>
+                Mono.error(new RuntimeException("An error occurred"))
+
+        when: "GetDecentralizedFinanceDefi is called and return a ServerRequest with a error scenario"
+        def actualErrorObject = apiHandler.getDecentralizedFinanceDefi(serverRequestMock)
+
+        then: "It handles the error and returns an Internal Server Error"
+        StepVerifier.create(actualErrorObject)
+                .expectErrorMatches {actualError ->
+                    actualError instanceof ApiClientErrorException &&
+                            actualError.getErrorTypeEnum() == ErrorTypeEnum.API_SERVER_ERROR &&
+                            actualError.getMessage() == "An unexpected error occurred in getDecentralizedFinanceDefi"
+                }
+                .verify()
+    }
 }

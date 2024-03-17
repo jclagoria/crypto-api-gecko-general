@@ -33,13 +33,19 @@ public class GlobalApiHandler {
                 ));
     }
     public Mono<ServerResponse> getDecentralizedFinanceDefi(ServerRequest sRequest) {
-        log.info("Fetching decentralized finance data from CoinGecko API");
+        log.info("Fetching decentralized finance data from CoinGecko API {}", sRequest.path());
 
         return generalService.getDecentralizedFinance()
-                .flatMap(defi -> ServerResponse.ok().bodyValue(defi))
+                .flatMap(defi -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(defi))
+                .doOnSubscribe(subscription -> log.info("Retrieve Decentralized Finance from CoinGecko API"))
                 .switchIfEmpty(ServerResponse.notFound().build())
-                .onErrorResume(e -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .bodyValue("Error fetching decentralized finance data: " + e.getMessage()));
+                .onErrorResume(error -> Mono.error(
+                        new ApiClientErrorException("An unexpected error occurred in getDecentralizedFinanceDefi",
+                                ErrorTypeEnum.API_SERVER_ERROR,
+                                HttpStatus.INTERNAL_SERVER_ERROR)
+                ));
     }
 
 }
