@@ -23,7 +23,7 @@ public class CoinGeckoServiceExchangeRatesApi {
         log.info("in getExchangeRatesFromGeckoApi - Calling Gecko Api Service -> "
                 + externalServerConfig.getExchangeRates());
 
-        return null;
+        return httpServiceCall.getMonoObject(externalServerConfig.getExchangeRates(), ExchangeRate.class);
     }
 
 }
