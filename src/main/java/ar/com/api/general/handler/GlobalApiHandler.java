@@ -1,8 +1,11 @@
 package ar.com.api.general.handler;
 
+import ar.com.api.general.enums.ErrorTypeEnum;
+import ar.com.api.general.exception.ApiClientErrorException;
 import ar.com.api.general.services.CoinGeckoGeneralServicesApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -15,13 +18,19 @@ public class GlobalApiHandler {
         this.generalService = generalService;
     }
     public Mono<ServerResponse> getGlobalDataFromGeckoApi(ServerRequest serverRequest){
-        log.info("Fetching global data from CoinGecko API");
+        log.info("Fetching global data from CoinGecko API {}", serverRequest.path());
 
         return generalService.getGlobalData()
-                .flatMap(data -> ServerResponse.ok().bodyValue(data))
+                .flatMap(data -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(data))
+                .doOnSubscribe(subscription -> log.info("Retrieving Global Data from CoinGecko Api"))
                 .switchIfEmpty(ServerResponse.notFound().build())
-                .onErrorResume(e -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .bodyValue("Error fetching global data: " + e.getMessage()));
+                .onErrorResume(error -> Mono.error(
+                        new ApiClientErrorException("An unexpected error occurred in getGlobalDataFromGeckoApi",
+                                ErrorTypeEnum.API_SERVER_ERROR,
+                                HttpStatus.INTERNAL_SERVER_ERROR)
+                ));
     }
     public Mono<ServerResponse> getDecentralizedFinanceDefi(ServerRequest sRequest) {
         log.info("Fetching decentralized finance data from CoinGecko API");

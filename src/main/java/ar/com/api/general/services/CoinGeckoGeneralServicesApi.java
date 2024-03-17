@@ -23,7 +23,7 @@ public class CoinGeckoGeneralServicesApi {
 
         log.info("in getGlobalData - Calling Gecko Api Service -> " + externalServerConfig.getGlobal());
 
-        return null;
+        return httpServiceCall.getMonoObject(externalServerConfig.getGlobal(), Global.class);
     }
 
     public Mono<DecentralizedFinance> getDecentralizedFinance() {
