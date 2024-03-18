@@ -17,6 +17,7 @@ public class Trending implements Serializable {
     @JsonProperty
     private List<TrendingNfts> nfts;
 
+    @JsonProperty
     private List<TrendingCategories> categories;
 
 

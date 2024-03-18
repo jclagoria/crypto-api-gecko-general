@@ -49,13 +49,21 @@ public class SearchApiHandler {
 
     }
 
-    public Mono<ServerResponse> getTrendingOfCoinsAPI(ServerRequest serverRequest) {
-        log.info("Fetching trending coins");
+    public Mono<ServerResponse> getTrendingOfCoinsAPI(ServerRequest sRequest) {
+        log.info("In Search -> getTrendingOfCoinsAPI, handling request {}", sRequest.path());
 
         return searchAPIService.getSearchTrendingFromGeckoApi()
-                .flatMap(trending -> ServerResponse.ok().bodyValue(trending))
-                .switchIfEmpty(Mono.defer(() -> ServerResponse.noContent().build()));
-
+                .flatMap(trending ->
+                        ServerResponse.ok()
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(trending))
+                .switchIfEmpty(ServerResponse.notFound().build())
+                .doOnSubscribe(subscription -> log.info("Retrieving Trending form CoinGecko API"))
+                .onErrorResume(error -> Mono.error(
+                        new ApiClientErrorException("An unexpected error occurred in getTrendingOfCoinsAPI",
+                                ErrorTypeEnum.API_SERVER_ERROR,
+                                HttpStatus.INTERNAL_SERVER_ERROR)
+                ));
     }
 
 }
