@@ -35,7 +35,7 @@ public class CoinGeckoSearchAPIService {
         log.info("in getSearTRendingFromGeckoApi - Calling Gecko Api Service -> "
                 + externalServerConfig.getSearchTrending());
 
-        return null;
+        return httpServiceCall.getMonoObject(externalServerConfig.getSearchTrending(), Trending.class);
     }
 
 }

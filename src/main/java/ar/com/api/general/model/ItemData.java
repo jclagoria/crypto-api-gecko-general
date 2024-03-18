@@ -4,20 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.Map;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Trending implements Serializable {
+public class ItemData {
 
     @JsonProperty
-    private List<TrendingCoin> coins;
+    private String price;
 
-    @JsonProperty
-    private List<TrendingNfts> nfts;
+    @JsonProperty("price_btc")
+    private String priceBtc;
 
-    private List<TrendingCategories> categories;
-
+    @JsonProperty("price_change_percentage_24h")
+    private Map<String, Double> priceChangePercentage24h;
 
 }
