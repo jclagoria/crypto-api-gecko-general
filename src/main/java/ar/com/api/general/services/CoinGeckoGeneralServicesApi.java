@@ -26,7 +26,8 @@ public class CoinGeckoGeneralServicesApi {
     }
 
     public Mono<DecentralizedFinance> getDecentralizedFinance() {
-        log.info("In getDecentralizedFinance - Calling DecentralizedFinance -> " + externalServerConfig.getDecentralized());
+        log.info("In getDecentralizedFinance - Calling DecentralizedFinance -> "
+                + externalServerConfig.getDecentralized());
 
         return httpServiceCall.getMonoObject(externalServerConfig.getDecentralized(), DecentralizedFinance.class);
     }

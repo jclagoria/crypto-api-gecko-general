@@ -27,11 +27,11 @@ public class CoinGeckoSearchAPIService {
                 + externalServerConfig.getSearch()
                 + filterDTO.getUrlFilterString());
 
-        return null;
+        return httpServiceCall.getMonoObject(externalServerConfig.getSearch()
+                + filterDTO.getUrlFilterString(), Search.class);
     }
 
     public Mono<Trending> getSearchTrendingFromGeckoApi() {
-
         log.info("in getSearTRendingFromGeckoApi - Calling Gecko Api Service -> "
                 + externalServerConfig.getSearchTrending());
 

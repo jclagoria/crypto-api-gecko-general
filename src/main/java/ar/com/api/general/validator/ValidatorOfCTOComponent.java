@@ -2,12 +2,14 @@ package ar.com.api.general.validator;
 
 import ar.com.api.general.exception.ApiValidatorError;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import reactor.core.publisher.Mono;
 
 import java.util.stream.Collectors;
 
+@Component
 public class ValidatorOfCTOComponent {
 
     private final SpringValidatorAdapter validatorAdapter;

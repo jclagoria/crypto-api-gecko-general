@@ -19,7 +19,6 @@ public class CoinGeckoServiceExchangeRatesApi {
     }
 
     public Mono<ExchangeRate> getExchangeRatesFromGeckoApi() {
-
         log.info("in getExchangeRatesFromGeckoApi - Calling Gecko Api Service -> "
                 + externalServerConfig.getExchangeRates());
 
