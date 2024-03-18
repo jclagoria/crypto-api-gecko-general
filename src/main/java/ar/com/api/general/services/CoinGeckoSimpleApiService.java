@@ -22,22 +22,22 @@ public class CoinGeckoSimpleApiService {
     }
 
     public Mono<Map> getSimplePriceApiService(SimplePriceFilterDTO filterDTO) {
-
-        log.info("in getSimplePriceApiService - Calling Gecko Api Service -> "
-                + externalServerConfig.getSimplePrice()
+        log.info("in getSimplePriceApiService - Calling Gecko Api Service -> {}",
+                externalServerConfig.getSimplePrice()
                 + filterDTO.getUrlFilterString());
 
-        return null;
+        return httpServiceCall.getMonoObject(externalServerConfig.getSimplePrice()
+                + filterDTO.getUrlFilterString(), Map.class);
     }
 
     public Mono<Map> getSimplePriceTokenById(TokenPriceByIdDTO filterDTO) {
-
-        log.info("in getSimplePriceTokenById - Calling Gecko Api Service -> " +
+        log.info("in getSimplePriceTokenById - Calling Gecko Api Service -> {}",
                 String.format(externalServerConfig.getSimpleTokePriceById(),
                         filterDTO.getIds())
                 + filterDTO.getUrlFilterString());
 
-        return null;
+        return httpServiceCall.getMonoObject(String.format(externalServerConfig.getSimpleTokePriceById(),
+                filterDTO.getIds()) + filterDTO.getUrlFilterString(), Map.class);
     }
 
 }
