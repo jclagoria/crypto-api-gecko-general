@@ -7,12 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
+
 @Configuration
-public class ExchangeRateRouterConfig extends AbstractRouterConfig {
-    private ApiServiceConfig apiServiceConfig;
+public class ExchangeRateRouterConfig {
+    private final ApiServiceConfig apiServiceConfig;
+
     public ExchangeRateRouterConfig(ApiServiceConfig serviceConfig) {
         this.apiServiceConfig = serviceConfig;
     }
+
     @Bean
     public RouterFunction<ServerResponse> routeExchangeRate(ExchangeRateApiHandler handler) {
 

@@ -41,4 +41,7 @@ public class ItemCoin {
     @JsonProperty("score")
     private long score;
 
+    @JsonProperty("data")
+    private ItemData itemData;
+
 }

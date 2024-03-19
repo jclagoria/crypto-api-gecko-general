@@ -6,19 +6,19 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Trending implements Serializable {
 
-    @JsonProperty("coins")
+    @JsonProperty
     private List<TrendingCoin> coins;
 
-    @JsonProperty("exchanges")
-    private List<Object> exchanges;
+    @JsonProperty
+    private List<TrendingNfts> nfts;
 
-    @JsonProperty("nfts")
-    private List<Object> nfts;
+    @JsonProperty
+    private List<TrendingCategories> categories;
+
 
 }

@@ -11,8 +11,8 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
-public class SimpleRouteConfig extends AbstractRouterConfig {
-    private ApiServiceConfig apiServiceConfig;
+public class SimpleRouteConfig {
+    private final ApiServiceConfig apiServiceConfig;
 
     public SimpleRouteConfig(ApiServiceConfig apiServiceConfig) {
         this.apiServiceConfig = apiServiceConfig;

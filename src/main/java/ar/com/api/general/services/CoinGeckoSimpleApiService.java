@@ -1,74 +1,43 @@
 package ar.com.api.general.services;
 
 import ar.com.api.general.configuration.ExternalServerConfig;
+import ar.com.api.general.configuration.HttpServiceCall;
 import ar.com.api.general.dto.SimplePriceFilterDTO;
 import ar.com.api.general.dto.TokenPriceByIdDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
 @Service
 @Slf4j
-public class CoinGeckoSimpleApiService extends CoinGeckoServiceApi {
-    private ExternalServerConfig externalServerConfig;
-    private WebClient webClient;
-    public CoinGeckoSimpleApiService(WebClient wClient, ExternalServerConfig externalServerConfig) {
-        this.webClient = wClient;
+public class CoinGeckoSimpleApiService {
+    private final ExternalServerConfig externalServerConfig;
+    private final HttpServiceCall httpServiceCall;
+
+    public CoinGeckoSimpleApiService(HttpServiceCall serviceCall, ExternalServerConfig externalServerConfig) {
+        this.httpServiceCall = serviceCall;
         this.externalServerConfig = externalServerConfig;
     }
 
     public Mono<Map> getSimplePriceApiService(SimplePriceFilterDTO filterDTO) {
-
-        log.info("in getSimplePriceApiService - Calling Gecko Api Service -> "
-                + externalServerConfig.getSimplePrice()
+        log.info("in getSimplePriceApiService - Calling Gecko Api Service -> {}",
+                externalServerConfig.getSimplePrice()
                 + filterDTO.getUrlFilterString());
 
-        return webClient
-                .get()
-                .uri(externalServerConfig.getSimplePrice() + filterDTO.getUrlFilterString())
-                .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError(),
-                        getClientResponseMonoDataException()
-                )
-                .onStatus(
-                        status -> status.is5xxServerError(),
-                        getClientResponseMonoDataException()
-                )
-                .bodyToMono(Map.class)
-                .doOnError(
-                        ManageExceptionCoinGeckoServiceApi::throwServiceException
-                );
+        return httpServiceCall.getMonoObject(externalServerConfig.getSimplePrice()
+                + filterDTO.getUrlFilterString(), Map.class);
     }
-    public Mono<Map> getSimplePriceTokenById(TokenPriceByIdDTO filterDTO){
 
-        log.info("in getSimplePriceTokenById - Calling Gecko Api Service -> " +
+    public Mono<Map> getSimplePriceTokenById(TokenPriceByIdDTO filterDTO) {
+        log.info("in getSimplePriceTokenById - Calling Gecko Api Service -> {}",
                 String.format(externalServerConfig.getSimpleTokePriceById(),
                         filterDTO.getIds())
                 + filterDTO.getUrlFilterString());
 
-        return webClient
-                .get()
-                .uri(
-                        String.format(
-                                externalServerConfig.getSimpleTokePriceById(),
-                                filterDTO.getIds()) + filterDTO.getUrlFilterString()
-                ).retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError(),
-                        getClientResponseMonoDataException()
-                )
-                .onStatus(
-                        status -> status.is5xxServerError(),
-                        getClientResponseMonoDataException()
-                )
-                .bodyToMono(Map.class)
-                .doOnError(
-                        ManageExceptionCoinGeckoServiceApi::throwServiceException
-                );
+        return httpServiceCall.getMonoObject(String.format(externalServerConfig.getSimpleTokePriceById(),
+                filterDTO.getIds()) + filterDTO.getUrlFilterString(), Map.class);
     }
 
 }

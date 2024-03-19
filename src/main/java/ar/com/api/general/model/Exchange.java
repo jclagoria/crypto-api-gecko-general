@@ -6,27 +6,20 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CoinSearch {
+public class Exchange {
 
     @JsonProperty("id")
-    private String id;
+    private String idExchange;
 
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("api_symbol")
-    private String apiSymbol;
-
-    @JsonProperty("symbol")
-    private String symbol;
-
-    @JsonProperty("market_cap_rank")
-    private long marketCapRank;
+    @JsonProperty("market_type")
+    private String marketType;
 
     @JsonProperty("thumb")
     private String thumb;
 
     @JsonProperty("large")
     private String large;
-
 }

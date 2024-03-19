@@ -9,8 +9,8 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
-public class SearchRouterConfig extends AbstractRouterConfig {
-    private ApiServiceConfig apiServiceConfig;
+public class SearchRouterConfig {
+    private final ApiServiceConfig apiServiceConfig;
 
     public SearchRouterConfig(ApiServiceConfig apiServiceConfig) {
         this.apiServiceConfig = apiServiceConfig;

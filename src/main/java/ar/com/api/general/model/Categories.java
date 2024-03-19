@@ -6,9 +6,12 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Ping {
+public class Categories {
 
-    @JsonProperty("gecko_says")
-    private String geckoSays;
+    @JsonProperty("id")
+    private long idCategory;
+
+    @JsonProperty("name")
+    private String name;
 
 }
